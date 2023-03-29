@@ -1,9 +1,11 @@
 import ContactItem from 'components/ContactItem';
-import { useSelector } from 'react-redux';
-import { getFilteredContacts } from 'redux/selectors';
+
+// import { getFilteredContacts } from 'redux/selectors';
+import { useGetContactsQuery } from '../../redux/apiSlice';
 
 function ContactList() {
-  const contacts = useSelector(getFilteredContacts);
+  const { data: contacts, error, isLoading } = useGetContactsQuery();
+
   return (
     <ul>
       {contacts.map(({ id, name, number }) => (
