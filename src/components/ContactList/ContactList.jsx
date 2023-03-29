@@ -4,7 +4,7 @@ import ContactItem from 'components/ContactItem';
 import { useGetContactsQuery } from '../../redux/apiSlice';
 
 function ContactList() {
-  const { data: contacts, error, isLoading } = useGetContactsQuery();
+  const { data: contacts } = useGetContactsQuery();
 
   return (
     <ul>

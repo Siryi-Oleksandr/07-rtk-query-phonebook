@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { HiUser } from 'react-icons/hi';
 import { ImPhone } from 'react-icons/im';
@@ -18,28 +18,27 @@ function ContactItem({ name, number, id }) {
   const [editNumber, setEditNumber] = useState(number);
   const [isEdit, setIsEdit] = useState(false);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleDeleteContact = id => {
-    dispatch(deleteContact(id));
+    // dispatch(deleteContact(id));
   };
 
   const handleEditContact = (newName, newNumber) => {
-    if (!isEdit) {
-      setIsEdit(true);
-    } else {
-      setEditName(prevName => (newName ? newName : prevName));
-      setEditNumber(prevNumber => (newNumber ? newNumber : prevNumber));
-      setIsEdit(false);
-
-      dispatch(
-        editContact({
-          id: id,
-          name: newName ? newName : name,
-          number: newNumber ? newNumber : number,
-        })
-      );
-    }
+    // if (!isEdit) {
+    //   setIsEdit(true);
+    // } else {
+    //   setEditName(prevName => (newName ? newName : prevName));
+    //   setEditNumber(prevNumber => (newNumber ? newNumber : prevNumber));
+    //   setIsEdit(false);
+    //   dispatch(
+    //     editContact({
+    //       id: id,
+    //       name: newName ? newName : name,
+    //       number: newNumber ? newNumber : number,
+    //     })
+    //   );
+    // }
   };
 
   return (
