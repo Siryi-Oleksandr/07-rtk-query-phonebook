@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-06-phonebook",
+  "name": "07-rtk-query-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Siryi-Oleksandr.github.io/goit-react-hw-06-phonebook/",
+  "homepage": "https://Siryi-Oleksandr.github.io/07-rtk-query-phonebook/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.3",
