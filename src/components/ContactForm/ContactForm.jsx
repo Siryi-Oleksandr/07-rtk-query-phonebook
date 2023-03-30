@@ -1,20 +1,17 @@
 import React from 'react';
 import { FormStyled, FormLabel, Input, Button } from './ContactForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
-import { getContacts } from '../../redux/selectors';
 import { toast } from 'react-hot-toast';
-import { nanoid } from '@reduxjs/toolkit';
+import { useAddContactMutation, useGetContactsQuery } from 'redux/apiSlice';
 
 const nameRegExp = "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
 const phoneRegExp =
   '+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}';
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const { data: contacts = [] } = useGetContactsQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
 
-  const handleSubmit = evt => {
+  const handleSubmit = async evt => {
     evt.preventDefault();
     const form = evt.currentTarget;
     const name = form.elements.name.value;
@@ -25,13 +22,18 @@ export const ContactForm = () => {
       return toast.success(`"${name}" is already in contacts.`);
     }
 
-    dispatch(
-      addContact({
-        id: nanoid(),
+    try {
+      await addContact({
         name,
         number,
-      })
-    );
+      });
+
+      toast.success(`Contact "${name} is successfully added!"`);
+    } catch (error) {
+      toast.error(`Error ${error.message}"`);
+      console.error(error);
+    }
+
     form.reset();
   };
 
@@ -55,7 +57,10 @@ export const ContactForm = () => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         />
       </FormLabel>
-      <Button type="submit">Add contact</Button>
+
+      <Button disabled={isLoading} type="submit">
+        Add contact
+      </Button>
     </FormStyled>
   );
 };

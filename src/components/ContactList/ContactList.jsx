@@ -1,14 +1,21 @@
 import ContactItem from 'components/ContactItem';
+import { useSelector } from 'react-redux';
 
-// import { getFilteredContacts } from 'redux/selectors';
+import { getFilter } from 'redux/selectors';
 import { useGetContactsQuery } from '../../redux/apiSlice';
 
 function ContactList() {
-  const { data: contacts } = useGetContactsQuery();
+  const { data: contacts = [] } = useGetContactsQuery();
+  const filterValue = useSelector(getFilter);
+
+  const normalizedFilter = filterValue.toLocaleLowerCase().trim();
+  const visibleContacts = contacts.filter(contact =>
+    contact.name.toLocaleLowerCase().includes(normalizedFilter)
+  );
 
   return (
     <ul>
-      {contacts.map(({ id, name, number }) => (
+      {visibleContacts.map(({ id, name, number }) => (
         <ContactItem key={id} name={name} number={number} id={id} />
       ))}
     </ul>

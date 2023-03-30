@@ -11,34 +11,50 @@ import {
 } from 'components/ContactItem/ContactItem.styled';
 import { Controls, ControlsSave } from 'components/Control/Controls';
 import EditForm from 'components/EditForm';
-import { editContact, deleteContact } from '../../redux/contactsSlice';
+import { toast } from 'react-hot-toast';
+import {
+  useDeleteContactMutation,
+  useEditContactMutation,
+} from 'redux/apiSlice';
 
 function ContactItem({ name, number, id }) {
   const [editName, setEditName] = useState(name);
   const [editNumber, setEditNumber] = useState(number);
   const [isEdit, setIsEdit] = useState(false);
 
-  // const dispatch = useDispatch();
+  const [deleteContact] = useDeleteContactMutation();
+  const [editContact] = useEditContactMutation();
 
-  const handleDeleteContact = id => {
-    // dispatch(deleteContact(id));
+  const handleDeleteContact = async id => {
+    try {
+      await deleteContact(id);
+      toast.success(`Contact "${name} is successfully removed!"`);
+    } catch (error) {
+      toast.error(`Error ${error.message}"`);
+      console.error(error);
+    }
   };
 
-  const handleEditContact = (newName, newNumber) => {
-    // if (!isEdit) {
-    //   setIsEdit(true);
-    // } else {
-    //   setEditName(prevName => (newName ? newName : prevName));
-    //   setEditNumber(prevNumber => (newNumber ? newNumber : prevNumber));
-    //   setIsEdit(false);
-    //   dispatch(
-    //     editContact({
-    //       id: id,
-    //       name: newName ? newName : name,
-    //       number: newNumber ? newNumber : number,
-    //     })
-    //   );
-    // }
+  const handleEditContact = async (newName, newNumber) => {
+    if (!isEdit) {
+      setIsEdit(true);
+    } else {
+      setEditName(prevName => (newName ? newName : prevName));
+      setEditNumber(prevNumber => (newNumber ? newNumber : prevNumber));
+      setIsEdit(false);
+
+      try {
+        await editContact({
+          id: id,
+          name: newName ? newName : name,
+          number: newNumber ? newNumber : number,
+        });
+        toast.success(`Contact "${name} is successfully edited!"`);
+      } catch (error) {
+        toast.error(`Error ${error.message}"`);
+        console.error(error);
+      }
+    }
   };
 
   return (
